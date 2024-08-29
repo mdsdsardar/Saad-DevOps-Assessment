@@ -33,12 +33,13 @@ jobs:
         ECR_URL: 556864637241.dkr.ecr.ap-south-1.amazonaws.com
       run: |
         IMAGE_TAG=$(date +%m-%d_%H-%M)
-        #REPO_NAME=$(echo ${{ github.repository }} | cut -d '/' -f 2)
-        REPO_EMAIL="email_sender"
-        REPO_API="notification_api"
-        EMAIL_IMAGE_NAME="${REPO_EMAIL}:${IMAGE_TAG}"
-        API_IMAGE_NAME="${REPO_API}:${IMAGE_TAG}"
+        #REPO_EMAIL="email_sender"
+        #REPO_API="notification_api"
+        EMAIL_IMAGE_NAME="email_sender":${IMAGE_TAG}
+        API_IMAGE_NAME="notification_api":${IMAGE_TAG}
         docker build . --file email-sender-app/Dockerfile --tag "${EMAIL_IMAGE_NAME}"
-        #docker build -t "${IMAGE_NAME}" .
+        docker build . --file notification-api/Dockerfile --tag "${API_IMAGE_NAME}"
         docker tag "${EMAIL_IMAGE_NAME}" ${ECR_URL}/${EMAIL_IMAGE_NAME}
+        docker tag "${API_IMAGE_NAME}" ${ECR_URL}/${API_IMAGE_NAME}
         docker push ${ECR_URL}/${EMAIL_IMAGE_NAME}
+        docker push ${ECR_URL}/${API_IMAGE_NAME}
