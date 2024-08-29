@@ -12,27 +12,26 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Set up AWS CLI
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: Log in to AWS ECR
         env:
-          AWS_REGION: "ap-south-1"
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: $AWS_REGION
+          AWS_REGION: ap-south-1
+          ECR_URL: 556864637241.dkr.ecr.ap-south-1.amazonaws.com
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region $AWS_REGION
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${ECR_URL}
 
       - name: Create ECR Repository
         env:
-          AWS_REGION: ap-south-1
-          AWS_ACCOUNT_ID: 556864637241
           EMAIL_REPOSITORY: email_sender
           API_REPOSITORY: notification_api
+          ECR_URL: 556864637241.dkr.ecr.ap-south-1.amazonaws.com
         run: |
           aws ecr describe-repositories --repository-names $EMAIL_REPOSITORY || aws ecr create-repository --repository-name $EMAIL_REPOSITORY
           aws ecr describe-repositories --repository-names $API_REPOSITORY || aws ecr create-repository --repository-name $API_REPOSITORY
-          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com
-          docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com/$EMAIL_REPOSITORY:latest .
-          docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com/$API_REPOSITORY:latest .
-          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com/$EMAIL_REPOSITORY:latest
-          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com/$API_REPOSITORY:latest
+          #aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com
+          docker build -t ${ECR_URL}//$EMAIL_REPOSITORY:latest .
+          docker build -t ${ECR_URL}//$API_REPOSITORY:latest .
+          docker push ${ECR_URL}//$EMAIL_REPOSITORY:latest
+          docker push ${ECR_URL}//$API_REPOSITORY:latest
