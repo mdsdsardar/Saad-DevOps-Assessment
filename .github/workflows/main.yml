@@ -39,7 +39,11 @@ jobs:
         API_IMAGE_NAME="notification_api":${IMAGE_TAG}
         docker build . --file email-sender-app/Dockerfile --tag "${EMAIL_IMAGE_NAME}"
         docker build . --file notification-api/Dockerfile --tag "${API_IMAGE_NAME}"
-        docker tag "${EMAIL_IMAGE_NAME}" ${ECR_URL}/${EMAIL_IMAGE_NAME}
-        docker tag "${API_IMAGE_NAME}" ${ECR_URL}/${API_IMAGE_NAME}
-        docker push ${ECR_URL}/${EMAIL_IMAGE_NAME}
-        docker push ${ECR_URL}/${API_IMAGE_NAME}
+        EMAIL_IMAGE_URI=${ECR_URL}/${EMAIL_IMAGE_NAME}
+        API_IMAGE_URI=${ECR_URL}/${API_IMAGE_NAME}
+        docker tag "${EMAIL_IMAGE_NAME}" ${EMAIL_IMAGE_URI}
+        docker tag "${API_IMAGE_NAME}" ${API_IMAGE_URI}
+        docker push ${EMAIL_IMAGE_URI}
+        docker push ${API_IMAGE_URI}
+        echo "email_image_uri=$EMAIL_IMAGE_URI" >> $GITHUB_ENV
+        echo "api_image_uri=$API_IMAGE_URI" >> $GITHUB_ENV
