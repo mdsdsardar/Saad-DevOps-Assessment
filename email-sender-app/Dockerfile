@@ -13,8 +13,5 @@ RUN npm install
 # Copy the rest of the application files
 COPY email-sender-app/. .
 
-# Expose the port (if your application requires one)
-# EXPOSE 3000  # Uncomment if your application listens to a port
-
 # Start the application
 CMD ["npm", "start"]
