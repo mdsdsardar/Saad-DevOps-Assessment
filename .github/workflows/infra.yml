@@ -42,7 +42,7 @@ jobs:
          EMAIL_REPOSITORY: email_sender
          API_REPOSITORY: notification_api
          ECR_URL: 556864637241.dkr.ecr.ap-south-1.amazonaws.com
-         run: |
+      run: |
           aws ecr describe-repositories --repository-names $EMAIL_REPOSITORY || aws ecr create-repository --repository-name $EMAIL_REPOSITORY
           aws ecr describe-repositories --repository-names $API_REPOSITORY || aws ecr create-repository --repository-name $API_REPOSITORY
           #aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com
