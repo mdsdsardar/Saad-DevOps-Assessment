@@ -5,7 +5,7 @@ FROM node:14
 WORKDIR /usr/src/app
 
 # Copy the package.json and package-lock.json files
-COPY package*.json ./
+COPY email-sender-app/package*.json ./
 
 # Install the dependencies
 RUN npm install
