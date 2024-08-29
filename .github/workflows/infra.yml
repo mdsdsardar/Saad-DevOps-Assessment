@@ -43,13 +43,12 @@ jobs:
          API_REPOSITORY: notification_api
          ECR_URL: 556864637241.dkr.ecr.ap-south-1.amazonaws.com
       run: |
-          aws ecr describe-repositories --repository-names $EMAIL_REPOSITORY || aws ecr create-repository --repository-name $EMAIL_REPOSITORY
-          aws ecr describe-repositories --repository-names $API_REPOSITORY || aws ecr create-repository --repository-name $API_REPOSITORY
-          #aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com
-          docker build . --file email-sender-app/Dockerfile -t ${ECR_URL}/$EMAIL_REPOSITORY:latest
-          docker build . --file notification-api/Dockerfile -t ${ECR_URL}/$API_REPOSITORY:latest 
-          docker push ${ECR_URL}/$EMAIL_REPOSITORY:latest
-          docker push ${ECR_URL}/$API_REPOSITORY:latest
+        aws ecr describe-repositories --repository-names $EMAIL_REPOSITORY || aws ecr create-repository --repository-name $EMAIL_REPOSITORY
+        aws ecr describe-repositories --repository-names $API_REPOSITORY || aws ecr create-repository --repository-name $API_REPOSITORY
+        docker build . --file email-sender-app/Dockerfile -t ${ECR_URL}/$EMAIL_REPOSITORY:latest
+        docker build . --file notification-api/Dockerfile -t ${ECR_URL}/$API_REPOSITORY:latest 
+        docker push ${ECR_URL}/$EMAIL_REPOSITORY:latest
+        docker push ${ECR_URL}/$API_REPOSITORY:latest
           
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -93,5 +92,5 @@ jobs:
         EMAIL_REPOSITORY: email_sender
         API_REPOSITORY: notification_api
       run: |
-          aws ecr delete-repository --repository-name $EMAIL_REPOSITORY --force
-          aws ecr delete-repository --repository-name $API_REPOSITORY --force
+        aws ecr delete-repository --repository-name $EMAIL_REPOSITORY --force
+        aws ecr delete-repository --repository-name $API_REPOSITORY --force
