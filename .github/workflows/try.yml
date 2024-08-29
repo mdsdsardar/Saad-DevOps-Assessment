@@ -32,6 +32,6 @@ jobs:
           aws ecr describe-repositories --repository-names $API_REPOSITORY || aws ecr create-repository --repository-name $API_REPOSITORY
           #aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com
           docker build . --file email-sender-app/Dockerfile -t ${ECR_URL}/$EMAIL_REPOSITORY:latest
-          docker build . --file notification-api/Dockerfile ${ECR_URL}/$API_REPOSITORY:latest 
+          docker build . --file notification-api/Dockerfile -t ${ECR_URL}/$API_REPOSITORY:latest 
           docker push ${ECR_URL}/$EMAIL_REPOSITORY:latest
           docker push ${ECR_URL}/$API_REPOSITORY:latest
