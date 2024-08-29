@@ -1,8 +1,8 @@
-# Use an official Node.js runtime as the base image
-FROM node:14
+# Stage 1: Build the application
+FROM node:18-alpine AS build
 
-# Set the working directory inside the container
-WORKDIR /usr/src/app
+# Set the working directory
+WORKDIR /app
 
 # Copy the package.json and package-lock.json files
 COPY email-sender-app/package*.json ./
