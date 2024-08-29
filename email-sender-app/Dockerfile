@@ -11,7 +11,7 @@ COPY email-sender-app/package*.json ./
 RUN npm install
 
 # Copy the rest of the application files
-COPY . .
+COPY email-sender-app/. .
 
 # Expose the port (if your application requires one)
 # EXPOSE 3000  # Uncomment if your application listens to a port
