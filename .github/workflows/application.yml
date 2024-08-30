@@ -38,7 +38,7 @@ jobs:
         EMAIL_IMAGE_NAME="email_sender"
         API_IMAGE_NAME="notification_api"
         docker build --build-arg USER="${{ secrets.USER }}" --build-arg PASSWORD="${{ secrets.PASSWORD }}" --build-arg QUEUE_URL="${{ secrets.QUEUE_URL }}" --file email-sender-app/Dockerfile --tag "${EMAIL_IMAGE_NAME}" . 
-        docker build --build-arg QUEUE_URL="${{ secrets.QUEUE_URL }}" --build-arg PORT="${{ secrets.PORT }}" --file notification_api/Dockerfile --tag "${API_IMAGE_NAME}" . 
+        docker build --build-arg QUEUE_URL="${{ secrets.QUEUE_URL }}" --build-arg PORT="${{ secrets.PORT }}" --file notification-api/Dockerfile --tag "${API_IMAGE_NAME}" . 
         #docker build . --file notification-api/Dockerfile --tag "${API_IMAGE_NAME}"    
         EMAIL_IMAGE_URI=${ECR_URL}/${EMAIL_IMAGE_NAME}
         API_IMAGE_URI=${ECR_URL}/${API_IMAGE_NAME}
