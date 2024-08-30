@@ -6,8 +6,8 @@ const sqs = new AWS.SQS({ region: 'ap-south-1' });
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'mdsaadsardar2000@gmail.com',
-        pass: 'bgbl lgzq kual ztsm'  // Use an app password if 2FA is enabled
+        user: process.env.USER,
+        pass: process.env.PASSWORD
     }
 });
 
@@ -27,7 +27,7 @@ async function sendEmail(emailDetails) {
 
 async function processQueueMessages() {
     const params = {
-        QueueUrl: 'https://sqs.ap-south-1.amazonaws.com/556864637241/pt_queue.fifo',
+        QueueUrl: process.env.QUEUE_URL,
         MaxNumberOfMessages: 1,
         WaitTimeSeconds: 10
     };
@@ -43,7 +43,7 @@ async function processQueueMessages() {
 
             // Delete message from the queue after processing
             await sqs.deleteMessage({
-                QueueUrl: 'https://sqs.ap-south-1.amazonaws.com/556864637241/pt_queue.fifo',
+                QueueUrl: process.env.QUEUE_URL,
                 ReceiptHandle: message.ReceiptHandle
             }).promise();
 
