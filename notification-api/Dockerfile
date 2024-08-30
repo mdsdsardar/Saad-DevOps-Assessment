@@ -1,6 +1,14 @@
 # Stage 1: Build the application
 FROM node:18-alpine AS build
 
+# Declare build arguments
+ARG QUEUE_URL="development"
+ARG PORT="dummy_api_key"
+
+# Set environment variables using the build arguments
+ENV QUEUE_URL=${QUEUE_URL}
+ENV PORT=${PORT}
+
 # Set the working directory
 WORKDIR /app
 
