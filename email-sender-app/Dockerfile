@@ -1,6 +1,16 @@
 # Stage 1: Build the application
 FROM node:18-alpine AS build
 
+# Declare build arguments
+ARG USER="dummy_user"
+ARG PASSWORD="dummy_password"
+ARG QUEUE_URL="dummy"
+
+# Set environment variables using the build arguments
+ENV USER=${USER}
+ENV PASSWORD=${PASSWORD}
+ENV QUEUE_URL=${QUEUE_URL}
+
 # Set the working directory
 WORKDIR /app
 
