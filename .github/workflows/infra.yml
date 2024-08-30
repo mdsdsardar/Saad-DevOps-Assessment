@@ -45,8 +45,10 @@ jobs:
       run: |
         aws ecr describe-repositories --repository-names $EMAIL_REPOSITORY || aws ecr create-repository --repository-name $EMAIL_REPOSITORY
         aws ecr describe-repositories --repository-names $API_REPOSITORY || aws ecr create-repository --repository-name $API_REPOSITORY
-        docker build . --file email-sender-app/Dockerfile -t ${ECR_URL}/$EMAIL_REPOSITORY:latest
-        docker build . --file notification-api/Dockerfile -t ${ECR_URL}/$API_REPOSITORY:latest 
+        #docker build . --file email-sender-app/Dockerfile -t ${ECR_URL}/$EMAIL_REPOSITORY:latest
+        docker build --build-arg USER="${{ secrets.USER }}" --build-arg PASSWORD="${{ secrets.PASSWORD }}" --build-arg QUEUE_URL="${{ secrets.QUEUE_URL }}" . --file email-sender-app/Dockerfile -t ${ECR_URL}/$EMAIL_REPOSITORY:latest
+        docker build --build-arg QUEUE_URL="${{ secrets.QUEUE_URL }}" --build-arg PORT="${{ secrets.PORT }}" . --file notification-api/Dockerfile -t ${ECR_URL}/$API_REPOSITORY:latest
+        #docker build . --file notification-api/Dockerfile -t ${ECR_URL}/$API_REPOSITORY:latest 
         docker push ${ECR_URL}/$EMAIL_REPOSITORY:latest
         docker push ${ECR_URL}/$API_REPOSITORY:latest
           
